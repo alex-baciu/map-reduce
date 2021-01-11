@@ -53,37 +53,6 @@ void WriteFile(string path, map<string, map<string, int>> map)
 	}
 }
 
-vector<string> UniversalSplit(const string &text)
-{
-	vector<string> words;
-	int startIndex = 0;
-	int count = 0;
-
-	for (unsigned int i = 0; i < text.size(); i++)
-	{
-		if (text[i] == ' ' || text[i] == '?' || text[i] == ',' || text[i] == '!' || text[i] == '\n')
-		{
-			if (count != 0)
-			{
-				words.push_back(text.substr(startIndex, count));
-				count = 0;
-			}
-			startIndex = i + 1;
-		}
-		else
-		{
-			count++;
-		}
-	}
-
-	if (count != 0)
-	{
-		words.push_back(text.substr(startIndex, count));
-	}
-
-	return words;
-}
-
 map<string, map<string, int>> MapWithDirectIndex(vector<string> filenames)
 {
 	map<string, map<string, int>> result;
@@ -97,7 +66,7 @@ map<string, map<string, int>> MapWithDirectIndex(vector<string> filenames)
 		for (unsigned int j = 0; j < textLines.size(); j++)
 		{
 			map<string, int>& valuesMap = (*result.find(filenames[i])).second;
-			vector<string> words = UniversalSplit(textLines[j]);
+			vector<string> words = Split(textLines[j], string(" .=?!-`%-~({}[])',*+&^$#D@;\n"));
 
 			for (unsigned int k = 0; k < words.size(); k++)
 			{
@@ -226,7 +195,7 @@ map<string, map<string, int>> ReadTemporaryFiles(string path, int processRank, i
 
 		while (getline(file, line))
 		{
-			vector<string> wordPair = UniversalSplit(line);
+			vector<string> wordPair = Split(line, string(" \n"));
 
 			if (wordPair.size() == 0)
 				break;
@@ -253,3 +222,46 @@ map<string, map<string, int>> ReadTemporaryFiles(string path, int processRank, i
 	return result;
 }
 
+bool IsCharacterInString(string text, char c) 
+{
+	for (unsigned int i = 0; i < text.size(); i++)
+	{
+		if (text[i] == c)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+vector<string> Split(string text, string operators)
+{
+	vector<string> words;
+	int startIndex = 0;
+	int count = 0;
+
+	for (unsigned int i = 0; i < text.size(); i++)
+	{
+		if (IsCharacterInString(operators, text[i]))
+		{
+			if (count != 0)
+			{
+				words.push_back(text.substr(startIndex, count));
+				count = 0;
+			}
+			startIndex = i + 1;
+		}
+		else
+		{
+			count++;
+		}
+	}
+
+	if (count != 0)
+	{
+		words.push_back(text.substr(startIndex, count));
+	}
+
+	return words;
+}

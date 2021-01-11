@@ -1,1 +1,0 @@
-nu E:/an4/ALPD/Tema/Fisier-Test/Fisier3.txt 1

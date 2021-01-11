@@ -115,7 +115,7 @@ int main(int argc, char * argv[])
 
 		/*procesare reponsabilititate fisiere de citit*/
 		string filenamesMessage(buffer);
-		vector<string> filenames = UniversalSplit(filenamesMessage);
+		vector<string> filenames = Split(filenamesMessage, string(" \n"));
 
 		/*generare direct map din fisierele primite*/
 		map<string, map<string, int>> mapWithDirectIndexes = MapWithDirectIndex(filenames);

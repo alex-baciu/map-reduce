@@ -27,4 +27,5 @@ void GenerateTemporaryFiles(map<int, string>responsabilitiesMap, string tempPath
 map<string, map<string, int>> ReadTemporaryFiles(string path, int processRank, int p);
 
 /*functii utilitare*/
-vector<string> UniversalSplit(const string &text);
+vector<string> Split(string text, string operators);
+bool IsCharacterInString(string text, char c);
